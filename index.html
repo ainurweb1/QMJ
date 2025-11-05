@@ -1,0 +1,420 @@
+﻿<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ҚМЖ Генераторы</title>
+    <!-- Tailwind CSS жүктеу -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Интер шрифтін пайдалану -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Параллакс фоны: ҚМЖ */
+            background-image: url('https://placehold.co/1920x1080/f3e8d2/4a4a4a?text=ҚМЖ');
+            background-attachment: fixed; /* Параллакс эффектісі */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            min-height: 100vh;
+        }
+        /* Негізгі контейнерге мөлдір фон қосу */
+        #generator-container {
+            background-color: rgba(255, 255, 255, 0.95); /* Ақ сұр мөлдір фон */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        /* Кесте стилі (Word-қа көшіруге ыңғайлы) */
+        #qmjOutput table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #qmjOutput th, #qmjOutput td {
+            border: 1px solid #3b82f6; /* Көк түсті жиектер */
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            line-height: 1.4;
+        }
+        #qmjOutput th {
+            background-color: #e0f2fe; /* Ақ сұр/ашық көк сұр */
+            font-weight: 600;
+        }
+        .section-header {
+            background-color: #3b82f6; /* Негізгі көк түс */
+            color: white;
+            font-weight: bold;
+            text-align: center !important;
+        }
+        .highlight-input {
+            border-color: #10b981; /* Жасыл түспен ерекшелеу */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="generator-container" class="max-w-4xl mx-auto p-6 md:p-10 rounded-xl">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-700">ҚМЖ ГЕНЕРАТОРЫ</h1>
+        <p class="text-center text-gray-600 mb-6">
+            Төмендегі өрістерді толтырыңыз. ҚМЖ автоматты түрде ҚР 130-бұйрығына сәйкес генерацияланады.
+        </p>
+
+        <!-- Input Form -->
+        <form id="inputForm" class="space-y-4">
+            <!-- Mandatory Teacher Inputs -->
+            <div class="grid md:grid-cols-2 gap-4 border p-4 rounded-lg bg-blue-50/50">
+                <div class="col-span-2">
+                    <label for="bolim" class="block text-sm font-medium text-gray-700">Бөлім:</label>
+                    <input type="text" id="bolim" value="Туған жерім-аялы алтын бесігі" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="pedagog" class="block text-sm font-medium text-gray-700">Педагогтің аты-жөні:</label>
+                    <input type="text" id="pedagog" value="Айнұр Хаметқызы" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="mektep" class="block text-sm font-medium text-gray-700">Мектеп:</label>
+                    <input type="text" id="mektep" value="№ 7 мектеп" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="kuni" class="block text-sm font-medium text-gray-700">Күні:</label>
+                    <input type="date" id="kuni" value="2025-11-03" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="synyp" class="block text-sm font-medium text-gray-700">Сынып:</label>
+                    <input type="text" id="synyp" value="6 2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="katyskan" class="block text-sm font-medium text-gray-700">Қатысқандар саны:</label>
+                    <input type="number" id="katyskan" value="15" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div>
+                    <label for="katyspaғan" class="block text-sm font-medium text-gray-700">Қатыспағандар саны:</label>
+                    <input type="number" id="katyspaғan" value="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div class="col-span-2">
+                    <label for="takyrby" class="block text-sm font-medium text-gray-700">Сабақтың тақырыбы:</label>
+                    <input type="text" id="takyrby" value="Ертегілер. &quot;Аяз би&quot;-шыншыл ертегі сюжеті мен фабуласы" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+                <div class="col-span-2">
+                    <label for="om" class="block text-sm font-medium text-gray-700">Оқу мақсаты (ОМ):</label>
+                    <textarea id="om" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">6.1.1.1. әдеби шығарманың жанрын, фабуласын, сюжетін анықтау.</textarea>
+                </div>
+                <div class="col-span-2">
+                    <label for="kundylyktar" class="block text-sm font-medium text-gray-700">Құндылықтарға баулу:</label>
+                    <input type="text" id="kundylyktar" value="Зайырлы қоғам және жоғары руханият (3-құндылық)" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">
+                </div>
+            </div>
+
+            <!-- Lesson Objectives (Structured Input) -->
+            <div class="border p-4 rounded-lg bg-blue-50/50">
+                <h3 class="text-md font-semibold text-gray-700 mb-2">Сабақтың мақсаттары (💡):</h3>
+                <div>
+                    <label for="maqsat_barlyk" class="block text-sm font-medium text-gray-700">Барлық оқушылар:</label>
+                    <textarea id="maqsat_barlyk" rows="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">Ертегілер туралы мағлұмат алады, жанрлық ерекшелігін түсінеді.</textarea>
+                </div>
+                <div>
+                    <label for="maqsat_kopshilik" class="block text-sm font-medium text-gray-700">Көпшілігі:</label>
+                    <textarea id="maqsat_kopshilik" rows="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">Ертегілердің фабуласы мен сюжеттік дамуын сипаттайды.</textarea>
+                </div>
+                <div>
+                    <label for="maqsat_keibir" class="block text-sm font-medium text-gray-700">Кейбір оқушылар:</label>
+                    <textarea id="maqsat_keibir" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 highlight-input">Ертегілердің фабуласы мен сюжеттік дамуын сипаттайды, шығарма идеясын талқылап, өзіндік пікір айтады.</textarea>
+                </div>
+            </div>
+
+            <!-- Optional AI/Teacher Content Fields -->
+            <div class="space-y-4 border p-4 rounded-lg bg-blue-50/50">
+                <h3 class="text-md font-semibold text-gray-700 mb-2">Қосымша материалдар мен әдіс-тәсілдер:</h3>
+                <div>
+                    <label for="optional_material" class="block text-sm font-medium text-gray-700">Сабаққа қажет материал/мәтін (Мұғалім толтырады):</label>
+                    <textarea id="optional_material" rows="3" placeholder="Мысалы: &quot;Аяз би&quot; ертегісінен үзінділер, сөздікпен жұмысқа арналған сөздер тізімі." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"></textarea>
+                </div>
+                <div>
+                    <label for="optional_methods" class="block text-sm font-medium text-gray-700">Қосымша әдіс-тәсілдер (Мұғалім толтырады):</label>
+                    <textarea id="optional_methods" rows="3" placeholder="Мысалы: «Ойлан-Жұптас-Бөліс» әдісі, «Галереяны шарлау»." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2"></textarea>
+                </div>
+            </div>
+            
+            <button type="button" onclick="generateQMJ()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-lg">
+                📝 ҚМЖ Генерациялау
+            </button>
+        </form>
+
+        <!-- Output Area -->
+        <div id="qmjOutput" class="mt-10 border border-blue-300 rounded-xl overflow-hidden hidden">
+            <div class="p-4 bg-blue-100/70 text-blue-800 font-semibold flex justify-between items-center">
+                <span class="text-lg">Генерацияланған ҚМЖ</span>
+                <button onclick="copyQMJ()" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200">
+                    📋 Көшіру
+                </button>
+            </div>
+            <div id="qmjContent" class="p-0">
+                <!-- Generated Table will be inserted here -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Глобальді айнымалылар
+        let qmjGeneratedText = "";
+
+        /**
+         * ҚМЖ-ны генерациялау функциясы
+         */
+        function generateQMJ() {
+            const data = {
+                bolim: document.getElementById('bolim').value || '...',
+                pedagog: document.getElementById('pedagog').value || '...',
+                mektep: document.getElementById('mektep').value || '...',
+                kuni: document.getElementById('kuni').value || '...',
+                synyp: document.getElementById('synyp').value || '...',
+                katyskan: document.getElementById('katyskan').value || '...',
+                katyspaғan: document.getElementById('katyspaғan').value || '...',
+                takyrby: document.getElementById('takyrby').value || '...',
+                om: document.getElementById('om').value || '...',
+                kundylyktar: document.getElementById('kundylyktar').value || '...',
+                maqsat_barlyk: document.getElementById('maqsat_barlyk').value || '...',
+                maqsat_kopshilik: document.getElementById('maqsat_kopshilik').value || '...',
+                maqsat_keibir: document.getElementById('maqsat_keibir').value || '...',
+                optional_material: document.getElementById('optional_material').value || 'Қосымша материалдар енгізілмеді.',
+                optional_methods: document.getElementById('optional_methods').value || 'Қосымша әдіс-тәсілдер енгізілмеді.',
+            };
+
+            // Генерацияланған кестенің HTML-і
+            const qmjTableHTML = `
+                <table class="qmj-table">
+                    <tbody>
+                        <!-- МҰҒАЛІМ МӘЛІМЕТТЕРІ БЛОГЫ -->
+                        <tr><th colspan="4" class="section-header">ҚЫСҚА МЕРЗІМДІ ЖОСПАР (ҚМЖ)</th></tr>
+                        <tr>
+                            <th style="width: 25%;">Бөлім:</th>
+                            <td style="width: 25%;">${data.bolim}</td>
+                            <th style="width: 25%;">Педагогтің аты-жөні:</th>
+                            <td style="width: 25%;">${data.pedagog}</td>
+                        </tr>
+                        <tr>
+                            <th>Мектеп:</th>
+                            <td>${data.mektep}</td>
+                            <th>Күні:</th>
+                            <td>${data.kuni}</td>
+                        </tr>
+                        <tr>
+                            <th>Сынып:</th>
+                            <td>${data.synyp}</td>
+                            <th>Сабақтың тақырыбы:</th>
+                            <td>${data.takyrby}</td>
+                        </tr>
+                        <tr>
+                            <th>Қатысқандар саны:</th>
+                            <td>${data.katyskan}</td>
+                            <th>Қатыспағандар саны:</th>
+                            <td>${data.katyspaғan}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Оқу бағдарламасына сәйкес оқыту мақсаты (ОМ):</th>
+                            <td colspan="2">${data.om}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Құндылықтарға баулу:</th>
+                            <td colspan="2">${data.kundylyktar}</td>
+                        </tr>
+
+                        <!-- САБАҚ МАҚСАТЫ БЛОГЫ -->
+                        <tr><th colspan="4" class="section-header">💡 Сабақтың мақсаты</th></tr>
+                        <tr>
+                            <th>Топтар</th>
+                            <th colspan="3">Мақсаттар</th>
+                        </tr>
+                        <tr>
+                            <td>Барлық оқушылар:</td>
+                            <td colspan="3">${data.maqsat_barlyk}</td>
+                        </tr>
+                        <tr>
+                            <td>Көпшілігі:</td>
+                            <td colspan="3">${data.maqsat_kopshilik}</td>
+                        </tr>
+                        <tr>
+                            <td>Кейбір оқушылар:</td>
+                            <td colspan="3">${data.maqsat_keibir}</td>
+                        </tr>
+                        
+                        <!-- БАҒАЛАУ КРИТЕРИЙЛЕРІ -->
+                        <tr><th colspan="4" class="section-header">Бағалау және Ойлау дағдылары</th></tr>
+                        <tr>
+                            <th>Бағалау критерийі:</th>
+                            <td colspan="3">
+                                <ul>
+                                    <li>Ертегілердің фабуласы мен сюжеттік дамуын сипаттайды.</li>
+                                    <li>Шығарма идеясын талқылап, өзіндік пікір айтады.</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Ойлау дағдыларының деңгейі:</th>
+                            <td colspan="3">Білу, Түсіну, Жоғары деңгей дағдылары (Талдау, Жинақтау)</td>
+                        </tr>
+
+                        <!-- САБАҚ БАРЫСЫ БЛОГЫ -->
+                        <tr><th colspan="4" class="section-header">📝 Сабақ барысы</th></tr>
+                        <tr>
+                            <th>Сабақ кезеңі/Уақыты</th>
+                            <th>Педагогтің іс-әрекеті</th>
+                            <th>Оқушының іс-әрекеті</th>
+                            <th>Бағалау/Ресурстар</th>
+                        </tr>
+                        
+                        <!-- І. Сабақтың басы (10 мин) -->
+                        <tr>
+                            <th colspan="4" style="background-color: #f0f9ff;">І. Сабақтың басы (10 мин)</th>
+                        </tr>
+                        <tr>
+                            <td>Ұйымдастыру кезеңі (5 мин)</td>
+                            <td>«Жылы сөздер» әдісі. Шаттық шеңберін құрып, бір-біріне жақсы тілек, жылы лебіздерін білдіруді ұйымдастырады. Психологиялық ахуалды қалыптастырады.</td>
+                            <td>Оқушылар шеңбер құрып, бір-біріне сәттілік тілеп, жағымды ахуал қалыптастырады.</td>
+                            <td>ҚБ: Мадақтау сөздері. Ресурстар: Тақырыптық суреттер.</td>
+                        </tr>
+                        <tr>
+                            <td>Топқа бөлу (5 мин)</td>
+                            <td>Оқушыларды «Түстер» немесе «Сандар» әдісі арқылы 3 топқа бөледі: 1-топ: Жазушылар, 2-топ: Зерттеушілер, 3-топ: Әдебиетшілер.</td>
+                            <td>Топтастырылады. Топ ережесін еске түсіреді.</td>
+                            <td>ҚБ: Мұғалімнің ауызша бағалауы. Ресурстар: Түсті стикерлер немесе сандар.</td>
+                        </tr>
+                        
+                        <!-- ІІ. Сабақтың ортасы (30 мин) -->
+                        <tr>
+                            <th colspan="4" style="background-color: #f0f9ff;">ІІ. Сабақтың ортасы (30 мин)</th>
+                        </tr>
+                        <tr>
+                            <td>Қызығушылықты ояту (5 мин)</td>
+                            <td>«Венн диаграммасы» әдісі: Халық ауыз әдебиеті мен жазба әдебиетін салыстыруды тапсырады. (Алдыңғы білімді еске түсіру)</td>
+                            <td>Халық ауыз әдебиеті мен жазба әдебиетін салыстырып, Венн диаграммасын толтырады.</td>
+                            <td>ҚБ: «Басбармақ» әдісі. Ресурстар: А3 парағы, маркерлер.</td>
+                        </tr>
+                        <tr>
+                            <td>Тақырыпты ашу (5 мин)</td>
+                            <td>Тақырыпқа қатысты қанатты сөздердің мәнін ашуды ұсынады: «Аяз әліңді біл, құмырсқа жолыңды біл!», «Ханмын деп аспа, баймын деп таспа!» Осы арқылы сабақ тақырыбы мен мақсаты айқындалады.</td>
+                            <td>Қанатты сөздердің мәнін ашады және сабақ тақырыбын анықтайды. Дәптерлеріне жазады.</td>
+                            <td>ҚБ: «Түстер» әдісі (Түсінік деңгейіне қарай). Ресурстар: Тақырыптық слайд.</td>
+                        </tr>
+                        <tr>
+                            <td>Топтық жұмыс (15 мин)</td>
+                            <td>«ДЖИГСО» әдісі (немесе ${data.optional_methods.split(',')[0] || 'Топтық талдау' }): Ертегі мәтінін бөлімдер бойынша топтарға бөліп береді: І топ «Хан тапсырмасы», ІІ топ «Хан сынағы», ІІІ топ «Жаманның үйленуі».</td>
+                            <td>Әр топ ертегінің өз бөлігін оқып, топ ішінде талқылайды. Содан соң "сарапшылар" тобында бірігіп, бөлімдерді толық түсіндіреді.</td>
+                            <td>ҚБ: «Екі жұлдыз, бір тілек». Ресурстар: Оқулық, ${data.optional_material}.</td>
+                        </tr>
+                        <tr>
+                            <td>Жұптық жұмыс (5 мин)</td>
+                            <td>«Шындық-жалған» әдісі: Ертегі мазмұнына сәйкес кестедегі тұжырымдардың дұрыс/бұрыстығын анықтауды ұсынады.</td>
+                            <td>Жұптасып берілген тұжырымдардың дұрыстығын немесе жалғандығын анықтап, дәлелдейді.</td>
+                            <td>ҚБ: Мұғалімнің кері байланысы. Дескриптор бойынша бағалау.</td>
+                        </tr>
+                        
+                        <!-- ІІІ. Сабақтың соңы (5 мин) -->
+                        <tr>
+                            <th colspan="4" style="background-color: #f0f9ff;">ІІІ. Сабақтың соңы (5 мин)</th>
+                        </tr>
+                        <tr>
+                            <td>Бекіту (3 мин)</td>
+                            <td>ПОПС формуласы әдісі: Сабақты қорытындылауды ұсынады.</td>
+                            <td>ПОПС формуласы бойынша сабақ тақырыбына қатысты өз ойын білдіреді: Позиция (Менің ойымша...), Ой (Себебі...), Пікір (Оны былай дәлелдеймін...), Салдар (Қорытындыға келдім...).</td>
+                            <td>ҚБ: Ауызша бағалау.</td>
+                        </tr>
+                        <tr>
+                            <td>Кері байланыс және Үй жұмысы (2 мин)</td>
+                            <td>«Бас бармақ» тәсілі арқылы сабаққа кері байланыс алуды ұйымдастырады. Үй жұмысын береді: Эссе немесе кейіпкерге мінездеме.</td>
+                            <td>Кері байланыс береді. Үй жұмысын жазып алады.</td>
+                            <td></td>
+                        </tr>
+
+                        <!-- ҚОСЫМША АҚПАРАТ БЛОГЫ -->
+                        <tr><th colspan="4" class="section-header">⭐️ Қосымша ақпарат</th></tr>
+                        <tr>
+                            <th>Саралау:</th>
+                            <td colspan="3">
+                                <p><strong>Тапсырманы саралау:</strong></p>
+                                <ul>
+                                    <li>1-топ (ОҚ: Жоғары): Тапсырма 1. Ертегіде көтерілген әлеуметтік-қоғамдық мәселені анықтап, идеясын түсіндіріп, тұжырымдардың дұрысын сәйкестендіреді. (Жауаптарды өзі іздейді)</li>
+                                    <li>2-топ (ОҚ: Орта): Тапсырма 2. Әлеуметтік-қоғамдық мәселелер анықталып беріледі, тек мысалдарын мазмұннан өздері іздеп табулары керек.</li>
+                                    <li>3-топ (ЕБҚ/Төмен): Мұғалімнің қолдауымен және берілген сілтемелерді қолдана отырып, ертегінің негізгі кейіпкерлерін атап, оларға сипаттама береді.</li>
+                                </ul>
+                                <p><strong>Қорытындыны саралау:</strong> ПОПС формуласы кезінде оқушылардың өзіндік пікір білдіруіне, шығарма идеясын талқылап, өзіндік пікір айтуына баса назар аударылады.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Бағалау (Жалпы):</th>
+                            <td colspan="3">Әр тапсырмадағы Қалыптастырушы бағалау (ҚБ) әдістері (Мұғалімнің ауызша бағалауы, «Басбармақ», «Түстер», «Екі жұлдыз, бір тілек») арқылы оқушылардың ОМ жету деңгейі анықталады.</td>
+                        </tr>
+                        <tr>
+                            <th>Денсаулық және қауіпсіздік техникасын сақтау:</th>
+                            <td colspan="3">Оқушылардың денсаулығы мен қауіпсіздік техникасын сақтау. Сабақ барысында сергіту сәтін немесе көз жаттығуын өткізу.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('qmjContent').innerHTML = qmjTableHTML;
+            document.getElementById('qmjOutput').classList.remove('hidden');
+            qmjGeneratedText = qmjTableHTML; // Көшіру үшін HTML-ді сақтау
+            
+            // Генерацияланғаннан кейін көшіруге көңіл аударту
+            document.getElementById('qmjOutput').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        /**
+         * Генерацияланған кестені көшіру функциясы (HTML форматында)
+         */
+        function copyQMJ() {
+            // HTML кестені көшіру үшін арнайы DOM элементін қолданамыз
+            const qmjContentElement = document.getElementById('qmjContent');
+            const range = document.createRange();
+            range.selectNode(qmjContentElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+
+            try {
+                // copy командасын орындау
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Көшірілді!' : 'Көшіру мүмкін болмады.';
+                showToast(msg, successful ? 'bg-green-500' : 'bg-red-500');
+            } catch (err) {
+                showToast('Көшіру барысында қате шықты.', 'bg-red-500');
+                console.error('Copy command failed: ', err);
+            }
+
+            window.getSelection().removeAllRanges();
+        }
+        
+        // Хабарлама (Toast) көрсету функциясы
+        function showToast(message, bgColor) {
+            let toast = document.getElementById('qmjToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'qmjToast';
+                toast.className = 'fixed bottom-5 right-5 p-3 rounded-lg text-white text-sm transition-opacity duration-300 opacity-0';
+                document.body.appendChild(toast);
+            }
+            
+            toast.textContent = message;
+            toast.className = `fixed bottom-5 right-5 p-3 rounded-lg text-white text-sm transition-opacity duration-300 ${bgColor} opacity-100 z-50`;
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // Күннің бүгінгі күнін автоматты толтыру (егер input date бос болса)
+        window.onload = function() {
+            const dateInput = document.getElementById('kuni');
+            if (!dateInput.value) {
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+                const yyyy = today.getFullYear();
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+        };
+    </script>
+</body>
+</html>
